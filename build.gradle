@@ -29,6 +29,8 @@ dependencies {
     compile 'com.imsweb:staging-client-java:4.0'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'com.squareup.retrofit2:retrofit:2.4.0'
+    testCompile 'com.squareup.retrofit2:converter-jackson:2.4.0'
 }
 
 jar {
