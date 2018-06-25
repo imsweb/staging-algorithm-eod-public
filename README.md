@@ -1,4 +1,4 @@
-# staging-client-eod-public
+# staging-algorithm-eod-public
 
 [![Build Status](https://travis-ci.com/imsweb/staging-algorithm-eod-public.svg?branch=master)](https://travis-ci.com/imsweb/staging-algorithm-eod-public)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public)
