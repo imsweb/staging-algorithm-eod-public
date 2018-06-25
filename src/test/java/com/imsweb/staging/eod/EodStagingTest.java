@@ -49,7 +49,7 @@ public class EodStagingTest extends StagingTest {
 
     @Override
     public String getVersion() {
-        return EodVersion.v1_2.getVersion();
+        return EodVersion.v1_3.getVersion();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testVersionInitializationTypes() {
-        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_2));
+        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_3));
         assertEquals(EodDataProvider.EodVersion.LATEST.getVersion(), staging10.getVersion());
 
         Staging stagingLatest = Staging.getInstance(EodDataProvider.getInstance());
@@ -170,7 +170,7 @@ public class EodStagingTest extends StagingTest {
                 .map(StagingSchema::getSchemaDiscriminators)
                 .forEach(discriminators::addAll);
 
-        assertEquals(new HashSet<>(Arrays.asList("sex", "discriminator_1", "discriminator_2")), discriminators);
+        assertEquals(new HashSet<>(Arrays.asList("sex", "behavior", "discriminator_1", "discriminator_2")), discriminators);
     }
 
     @Test
@@ -185,7 +185,7 @@ public class EodStagingTest extends StagingTest {
         assertEquals("soft_tissue_other", lookup.get(0).getId());
 
         // now invalidate the cache
-        EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_2).invalidateCache();
+        EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_3).invalidateCache();
 
         // try the lookup again
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
@@ -406,7 +406,7 @@ public class EodStagingTest extends StagingTest {
         assertEquals(5, data.getErrors().size());
         assertEquals(5, data.getPath().size());
         assertEquals(8, data.getOutput().size());
-        assertEquals("1.2", data.getOutput().get(EodOutput.DERIVED_VERSION.toString()));
+        assertEquals("1.3", data.getOutput().get(EodOutput.DERIVED_VERSION.toString()));
     }
 
     @Test
