@@ -119,12 +119,13 @@ StagingTable table = staging.getTable("ajcc7_stage");
 A common operation is to look up a schema based on primary site, histology and optionally one or more discriminators.  Each staging algorithm has 
 a `SchemaLookup` object customized for the specific inputs needed to lookup a schema.
 
-For Collaborative Staging, use the `TnmSchemaLookup` object.  Here is a lookup based on site and histology.
+Here is a lookup based on site and histology.
 
 ```java
-List<StagingSchema> lookup = staging.lookupSchema(new TnmSchemaLookup("C629", "9231"));
+// test valid combinations that do not require a discriminator
+EodSchemaLookup lookup = staging.lookupSchema(new EodSchemaLookup("C629", "9231"));
 assertEquals(1, lookup.size());
-assertEquals("testis", lookup.get(0).getId());
+assertEquals("soft_tissue_other", lookup.get(0).getId());
 ```
 
 If the call returns a single result, then it was successful.  If it returns more than one result, then it needs a discriminator.  Information about the 
@@ -132,17 +133,28 @@ required discriminator is included in the list of results.  In the Collaborative
 Other staging algorithms may use different sets of discriminators that can be determined based on the result.
 
 ```java
-// do not supply a discriminator
-List<StagingSchema> lookup = staging.lookupSchema(new TnmSchemaLookup("C111", "8200"));
-assertEquals(2, lookup.size());
-for (StagingSchema schema : lookup)
-    assertTrue(schema.getSchemaDiscriminators().contains(TnmStagingData.SSF25_KEY));
+lookup = staging.lookupSchema(new EodSchemaLookup("C111", "8200"));
+assertEquals(3, lookup.size());
+assertTrue(new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg")).containsAll(lookup.stream().map(StagingSchema::getId).collect(Collectors.toList())));
+assertEquals(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")), 
+             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 
-// supply a discriminator
-lookup = staging.lookupSchema(new TnmSchemaLookup("C111", "8200", "010"));
+// test valid combination that requires discriminator and a good discriminator is supplied
+schemaLookup = new EodSchemaLookup("C111", "8200");
+schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "1");
+lookup = staging.lookupSchema(schemaLookup);
 assertEquals(1, lookup.size());
+assertEquals(new HashSet<>(Collections.singletonList("discriminator_1")), 
+             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 assertEquals("nasopharynx", lookup.get(0).getId());
-assertEquals(Integer.valueOf(34), lookup.get(0).getSchemaNum());
+
+schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "2");
+schemaLookup.setInput(EodInput.DISCRIMINATOR_2.toString(), "1");
+lookup = staging.lookupSchema(schemaLookup);
+assertEquals(1, lookup.size());
+assertEquals(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")), 
+             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
+assertEquals("oropharynx_p16_neg", lookup.get(0).getId());
 ```
 
 ### Calculate stage
