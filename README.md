@@ -135,9 +135,10 @@ Other staging algorithms may use different sets of discriminators that can be de
 ```java
 lookup = staging.lookupSchema(new EodSchemaLookup("C111", "8200"));
 assertEquals(3, lookup.size());
-assertTrue(new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg")).containsAll(lookup.stream().map(StagingSchema::getId).collect(Collectors.toList())));
+assertEquals(new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg")),
+        lookup.stream().map(StagingSchema::getId).collect(Collectors.toSet()));
 assertEquals(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")), 
-             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
+        lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 
 // test valid combination that requires discriminator and a good discriminator is supplied
 schemaLookup = new EodSchemaLookup("C111", "8200");
@@ -145,7 +146,7 @@ schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "1");
 lookup = staging.lookupSchema(schemaLookup);
 assertEquals(1, lookup.size());
 assertEquals(new HashSet<>(Collections.singletonList("discriminator_1")), 
-             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
+        lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 assertEquals("nasopharynx", lookup.get(0).getId());
 
 schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "2");
@@ -153,7 +154,7 @@ schemaLookup.setInput(EodInput.DISCRIMINATOR_2.toString(), "1");
 lookup = staging.lookupSchema(schemaLookup);
 assertEquals(1, lookup.size());
 assertEquals(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")), 
-             lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
+        lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 assertEquals("oropharynx_p16_neg", lookup.get(0).getId());
 ```
 

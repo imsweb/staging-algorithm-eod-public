@@ -104,8 +104,8 @@ public class EodStagingTest extends StagingTest {
         // test valid combination that requires a discriminator but is not supplied one
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C111", "8200"));
         assertEquals(3, lookup.size());
-        assertTrue(new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg"))
-                .containsAll(lookup.stream().map(StagingSchema::getId).collect(Collectors.toList())));
+        assertEquals(new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg")),
+                lookup.stream().map(StagingSchema::getId).collect(Collectors.toSet()));
         assertEquals(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")), lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet()));
 
         // test valid combination that requires discriminator and a good discriminator is supplied
