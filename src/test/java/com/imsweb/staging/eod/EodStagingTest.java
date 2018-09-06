@@ -49,7 +49,7 @@ public class EodStagingTest extends StagingTest {
 
     @Override
     public String getVersion() {
-        return EodVersion.v1_3.getVersion();
+        return EodVersion.v1_4.getVersion();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testVersionInitializationTypes() {
-        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_3));
+        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_4));
         assertEquals(EodDataProvider.EodVersion.LATEST.getVersion(), staging10.getVersion());
 
         Staging stagingLatest = Staging.getInstance(EodDataProvider.getInstance());
@@ -185,7 +185,7 @@ public class EodStagingTest extends StagingTest {
         assertEquals("soft_tissue_other", lookup.get(0).getId());
 
         // now invalidate the cache
-        EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_3).invalidateCache();
+        EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_4).invalidateCache();
 
         // try the lookup again
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
@@ -202,7 +202,7 @@ public class EodStagingTest extends StagingTest {
         assertEquals(Integer.valueOf(2), _STAGING.findMatchingTableRow("tumor_size_clinical_60979", "size_clin", "002"));
         assertEquals(Integer.valueOf(2), _STAGING.findMatchingTableRow("tumor_size_clinical_60979", "size_clin", "100"));
         assertEquals(Integer.valueOf(2), _STAGING.findMatchingTableRow("tumor_size_clinical_60979", "size_clin", "988"));
-        assertEquals(Integer.valueOf(6), _STAGING.findMatchingTableRow("tumor_size_clinical_60979", "size_clin", "999"));
+        assertEquals(Integer.valueOf(5), _STAGING.findMatchingTableRow("tumor_size_clinical_60979", "size_clin", "999"));
     }
 
     @Test
@@ -267,9 +267,10 @@ public class EodStagingTest extends StagingTest {
         Set<String> tables = _STAGING.getInvolvedTables("adnexa_uterine_other");
 
         assertEquals(
-                new HashSet<>(Arrays.asList("seer_mets_48348", "nodes_dcc", "grade_clinical_standard_non_ajcc_32473", "grade_pathological_standard_non_ajcc_5627", "adnexa_uterine_other_97891",
-                        "nodes_pos_fpa", "tumor_size_pathological_25597", "tumor_size_clinical_60979", "primary_site", "histology", "nodes_exam_76029", "grade_post_therapy_standard_non_ajcc_43091",
-                        "schema_selection_adnexa_uterine_other", "year_dx_validation", "summary_stage_rpa", "tumor_size_summary_63115", "extension_bcn")), tables);
+                new HashSet<>(Arrays.asList("seer_mets_48348", "nodes_dcc", "grade_clinical_standard_non_ajcc_32473", "grade_pathological_standard_non_ajcc_5627",
+                        "adnexa_uterine_other_97891", "nodes_pos_fpa", "tumor_size_pathological_25597", "tumor_size_clinical_60979", "primary_site", "histology",
+                        "nodes_exam_76029", "grade_post_therapy_standard_non_ajcc_43091", "schema_selection_adnexa_uterine_other", "year_dx_validation",
+                        "summary_stage_rpa", "lvi_dna_56663", "tumor_size_summary_63115", "extension_bcn")), tables);
     }
 
     @Test
@@ -373,11 +374,11 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testEncoding() {
-        StagingTable table = _STAGING.getTable("psa_46258");
+        StagingTable table = _STAGING.getTable("serum_alb_pretx_level_58159");
 
         assertNotNull(table);
 
-        // the notes of this table contain UTF-8 characters, specifically the single quote character in this phrase: "You may use a physician’s statement"
+        // the notes of this table contain UTF-8 characters, specifically the symbol: ≥
 
         // converting to UTF-8 should change nothing
         assertEquals(table.getNotes(), new String(table.getNotes().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
@@ -406,7 +407,7 @@ public class EodStagingTest extends StagingTest {
         assertEquals(5, data.getErrors().size());
         assertEquals(5, data.getPath().size());
         assertEquals(8, data.getOutput().size());
-        assertEquals("1.3", data.getOutput().get(EodOutput.DERIVED_VERSION.toString()));
+        assertEquals("1.4", data.getOutput().get(EodOutput.DERIVED_VERSION.toString()));
     }
 
     @Test

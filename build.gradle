@@ -29,6 +29,7 @@ dependencies {
     compile 'com.imsweb:staging-client-java:4.1'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.11.1'
     testCompile 'com.squareup.retrofit2:retrofit:2.4.0'
     testCompile 'com.squareup.retrofit2:converter-jackson:2.4.0'
 }
@@ -63,7 +64,7 @@ if (version.endsWith('-SNAPSHOT'))
     gradle.startParameter.excludedTaskNames += 'closeAndReleaseRepository'
 
 wrapper {
-    gradleVersion = '4.9'
+    gradleVersion = '4.10'
 }
 
 modifyPom {
