@@ -30,14 +30,14 @@ Download [the latest JAR][1] or grab via Maven:
 <dependency>
     <groupId>com.imsweb</groupId>
     <artifactId>staging-algorithm-eod-public</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 </dependency>
 ```
 
 or via Gradle:
 
 ```groovy
-compile 'com.imsweb.com:staging-algorithm-eod-public:1.3'
+compile 'com.imsweb.com:staging-algorithm-eod-public:1.4'
 ```
 
 ## Usage
@@ -52,7 +52,7 @@ object is thread safe and cached so subsequent calls to `Staging.getInstance()` 
 For example, to get an instance of the EOD algorithm
 
 ```java
-Staging staging = Staging.getInstance(EodDataProvider.getInstance(EodVersion.v1_2));
+Staging staging = Staging.getInstance(EodDataProvider.getInstance(EodVersion.v1_4));
 ```
 
 ### Schemas
@@ -62,7 +62,7 @@ discrimator values.  Schemas include the following information:
 
 - schema identifier (i.e. "prostate")
 - algorithm identifier (i.e. "eod_public")
-- algorithm version (i.e. "1.2")
+- algorithm version (i.e. "1.4")
 - name
 - title, subtitle, description and notes
 - schema selection criteria
@@ -90,7 +90,7 @@ Tables include the following information:
 
 - table identifier (i.e. "ajcc7_stage")
 - algorithm identifier (i.e. "eod_public")
-- algorithm version (i.e. "1.2")
+- algorithm version (i.e. "1.4")
 - name
 - title, subtitle, description, notes and footnotes
 - list of column definitions
