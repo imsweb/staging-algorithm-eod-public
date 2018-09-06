@@ -25,12 +25,8 @@ import com.imsweb.staging.entities.StagingSchemaInput;
 import com.imsweb.staging.entities.StagingTable;
 import com.imsweb.staging.entities.StagingTableRow;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Base class for all algorithm-specific testing
@@ -56,8 +52,8 @@ public abstract class StagingTest {
 
     @Test
     public void testInitialization() {
-        assertEquals(getAlgorithm(), _STAGING.getAlgorithm());
-        assertEquals(getVersion(), _STAGING.getVersion());
+        assertThat(_STAGING.getAlgorithm()).isEqualTo(getAlgorithm());
+        assertThat(_STAGING.getVersion()).isEqualTo(getVersion());
     }
 
     @Test
@@ -65,10 +61,10 @@ public abstract class StagingTest {
         for (String id : _STAGING.getTableIds()) {
             StagingTable table = _STAGING.getTable(id);
 
-            assertNotNull(table);
-            assertNotNull(table.getAlgorithm());
-            assertNotNull(table.getVersion());
-            assertNotNull(table.getName());
+            assertThat(table).isNotNull();
+            assertThat(table.getAlgorithm()).isNotNull();
+            assertThat(table.getVersion()).isNotNull();
+            assertThat(table.getName()).isNotNull();
         }
     }
 
@@ -76,19 +72,19 @@ public abstract class StagingTest {
     public void testValidCode() {
         Map<String, String> context = new HashMap<>();
         context.put("hist", "7000");
-        assertFalse(_STAGING.isContextValid("prostate", "hist", context));
+        assertThat(_STAGING.isContextValid("prostate", "hist", context)).isFalse();
         context.put("hist", "8000");
-        assertTrue(_STAGING.isContextValid("prostate", "hist", context));
+        assertThat(_STAGING.isContextValid("prostate", "hist", context)).isTrue();
         context.put("hist", "8542");
-        assertTrue(_STAGING.isContextValid("prostate", "hist", context));
+        assertThat(_STAGING.isContextValid("prostate", "hist", context)).isTrue();
 
         // make sure null is handled
         context.put("hist", null);
-        assertFalse(_STAGING.isContextValid("prostate", "hist", context));
+        assertThat(_STAGING.isContextValid("prostate", "hist", context)).isFalse();
 
         // make sure blank is handled
         context.put("hist", "");
-        assertFalse(_STAGING.isContextValid("prostate", "hist", context));
+        assertThat(_STAGING.isContextValid("prostate", "hist", context)).isFalse();
     }
 
     @Test
@@ -97,59 +93,59 @@ public abstract class StagingTest {
         for (String id : _STAGING.getSchemaIds()) {
             StagingSchema schema = _STAGING.getSchema(id);
             for (StagingSchemaInput input : schema.getInputs()) {
-                assertNull("No schemas should have units", input.getUnit());
-                assertNull("No schemas should have decimal places", input.getDecimalPlaces());
+                assertThat(input.getUnit()).as("No schemas should have units").isNull();
+                assertThat(input.getDecimalPlaces()).as("No schemas should have decimal places").isNull();
             }
         }
     }
 
     @Test
     public void testValidSite() {
-        assertFalse(_STAGING.isValidSite(null));
-        assertFalse(_STAGING.isValidSite(""));
-        assertFalse(_STAGING.isValidSite("C21"));
-        assertFalse(_STAGING.isValidSite("C115"));
+        assertThat(_STAGING.isValidSite(null)).isFalse();
+        assertThat(_STAGING.isValidSite("")).isFalse();
+        assertThat(_STAGING.isValidSite("C21")).isFalse();
+        assertThat(_STAGING.isValidSite("C115")).isFalse();
 
-        assertTrue(_STAGING.isValidSite("C509"));
+        assertThat(_STAGING.isValidSite("C509")).isTrue();
     }
 
     @Test
     public void testValidHistology() {
-        assertFalse(_STAGING.isValidHistology(null));
-        assertFalse(_STAGING.isValidHistology(""));
-        assertFalse(_STAGING.isValidHistology("810"));
-        assertFalse(_STAGING.isValidHistology("8176"));
+        assertThat(_STAGING.isValidHistology(null)).isFalse();
+        assertThat(_STAGING.isValidHistology("")).isFalse();
+        assertThat(_STAGING.isValidHistology("810")).isFalse();
+        assertThat(_STAGING.isValidHistology("8176")).isFalse();
 
-        assertTrue(_STAGING.isValidHistology("8000"));
-        assertTrue(_STAGING.isValidHistology("8201"));
+        assertThat(_STAGING.isValidHistology("8000")).isTrue();
+        assertThat(_STAGING.isValidHistology("8201")).isTrue();
     }
 
     @Test
     public void testGetTable() {
-        assertNull(_STAGING.getTable("bad_table_name"));
+        assertThat(_STAGING.getTable("bad_table_name")).isNull();
     }
 
     @Test
     public void testCachedSiteAndHistology() {
         StagingDataProvider provider = getProvider();
-        assertTrue(provider.getValidSites().size() > 0);
-        assertTrue(provider.getValidHistologies().size() > 0);
+        assertThat(provider.getValidSites().size() > 0).isTrue();
+        assertThat(provider.getValidHistologies().size() > 0).isTrue();
 
         // site tests
         List<String> validSites = Arrays.asList("C000", "C809");
         List<String> invalidSites = Arrays.asList("C727", "C810");
         for (String site : validSites)
-            assertTrue(provider.getValidSites().contains(site));
+            assertThat(provider.getValidSites().contains(site)).isTrue();
         for (String site : invalidSites)
-            assertFalse(provider.getValidSites().contains(site));
+            assertThat(provider.getValidSites().contains(site)).isFalse();
 
         // hist tests
         List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992");
         List<String> invalidHist = Arrays.asList("8006", "9993");
         for (String hist : validHist)
-            assertTrue(provider.getValidHistologies().contains(hist));
+            assertThat(provider.getValidHistologies().contains(hist)).isTrue();
         for (String hist : invalidHist)
-            assertFalse(provider.getValidHistologies().contains(hist));
+            assertThat(provider.getValidHistologies().contains(hist)).isFalse();
     }
 
     @Test
@@ -235,7 +231,7 @@ public abstract class StagingTest {
         if (!errors.isEmpty()) {
             System.out.println("There were " + errors.size() + " issues with " + description + ".");
             errors.forEach(System.out::println);
-            fail();
+            fail("There were " + errors.size() + " issues with " + description + ".");
         }
     }
 
