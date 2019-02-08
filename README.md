@@ -1,6 +1,6 @@
 # staging-algorithm-eod-public
 
-[![CircleCI](https://circleci.com/gh/imsweb/staging-algorithm-eod-public.svg?style=svg)](https://circleci.com/gh/imsweb/staging-algorithm-eod-public)
+[![CircleCI](https://circleci.com/gh/imsweb/staging-algorithm-eod-public.svg?style=shield)](https://circleci.com/gh/imsweb/staging-algorithm-eod-public)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public)
 
 Extent of Disease (EOD) is a set of three data items that describe how far a cancer has spread at the time of diagnosis. EOD 2018 is effective for cases 
