@@ -11,11 +11,10 @@ jobs:
           keys:
             - gradle-{{ checksum "build.gradle" }}
       - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
-      - run:
           name: Run tests
-          command: ./gradlew check
+          command: |
+            chmod +x ./gradlew
+            ./gradlew check
       - run:
           name: Save test results
           command: |
