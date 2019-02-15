@@ -45,8 +45,8 @@ public final class EodDataProvider extends StagingFileDataProvider {
     }
 
     public enum EodVersion {
-        LATEST("1.4"),
-        v1_4("1.4");
+        LATEST("1.5"),
+        v1_5("1.5");
 
         private String _version;
 

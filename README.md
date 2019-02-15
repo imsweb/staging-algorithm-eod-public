@@ -30,14 +30,14 @@ Download [the latest JAR][1] or grab via Maven:
 <dependency>
     <groupId>com.imsweb</groupId>
     <artifactId>staging-algorithm-eod-public</artifactId>
-    <version>1.4.1</version>
+    <version>1.5</version>
 </dependency>
 ```
 
 or via Gradle:
 
 ```groovy
-compile 'com.imsweb.com:staging-algorithm-eod-public:1.4.1'
+compile 'com.imsweb.com:staging-algorithm-eod-public:1.5'
 ```
 
 ## Usage
@@ -52,7 +52,7 @@ object is thread safe and cached so subsequent calls to `Staging.getInstance()` 
 For example, to get an instance of the EOD algorithm
 
 ```java
-Staging staging = Staging.getInstance(EodDataProvider.getInstance(EodVersion.v1_4));
+Staging staging = Staging.getInstance(EodDataProvider.getInstance(EodVersion.LATEST));
 ```
 
 ### Schemas
