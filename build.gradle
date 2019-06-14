@@ -29,12 +29,12 @@ repositories {
 }
 
 dependencies {
-    api 'com.imsweb:staging-client-java:4.6'
+    api 'com.imsweb:staging-client-java:4.7'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'
-    testImplementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    testImplementation 'com.squareup.retrofit2:converter-jackson:2.4.0'
+    testImplementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    testImplementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
 }
 
 jar {
@@ -64,7 +64,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = '3.1.11'
+    toolVersion = '3.1.12'
     excludeFilter = file('config/spotbugs/spotbugs-exclude.xml')
 }
 
@@ -73,7 +73,7 @@ if (version.endsWith('-SNAPSHOT'))
     gradle.startParameter.excludedTaskNames += 'closeAndReleaseRepository'
 
 wrapper {
-    gradleVersion = '5.3.1'
+    gradleVersion = '5.4.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
