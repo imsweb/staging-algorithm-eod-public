@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.imsweb'
-version = '1.6'
+version = '1.6.1'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -73,7 +73,7 @@ if (version.endsWith('-SNAPSHOT'))
     gradle.startParameter.excludedTaskNames += 'closeAndReleaseRepository'
 
 wrapper {
-    gradleVersion = '5.4.1'
+    gradleVersion = '5.5.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
