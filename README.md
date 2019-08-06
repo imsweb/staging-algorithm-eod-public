@@ -30,14 +30,14 @@ Download [the latest JAR][1] or grab via Maven:
 <dependency>
     <groupId>com.imsweb</groupId>
     <artifactId>staging-algorithm-eod-public</artifactId>
-    <version>1.6.1</version>
+    <version>1.7</version>
 </dependency>
 ```
 
 or via Gradle:
 
 ```groovy
-compile 'com.imsweb.com:staging-algorithm-eod-public:1.6.1'
+compile 'com.imsweb.com:staging-algorithm-eod-public:1.7'
 ```
 
 ## Usage
