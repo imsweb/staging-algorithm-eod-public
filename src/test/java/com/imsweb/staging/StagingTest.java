@@ -24,6 +24,9 @@ import com.imsweb.staging.entities.StagingSchema;
 import com.imsweb.staging.entities.StagingSchemaInput;
 import com.imsweb.staging.entities.StagingTable;
 import com.imsweb.staging.entities.StagingTableRow;
+import com.imsweb.staging.eod.EodSchemaLookup;
+import com.imsweb.staging.eod.EodStagingData;
+import com.imsweb.staging.eod.EodStagingData.EodInput;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -118,6 +121,27 @@ public abstract class StagingTest {
 
         assertThat(_STAGING.isValidHistology("8000")).isTrue();
         assertThat(_STAGING.isValidHistology("8201")).isTrue();
+    }
+
+    @Test
+    public void testAllowedFields() {
+        Set<String> descriminators = new HashSet<>();
+        descriminators.add(EodStagingData.PRIMARY_SITE_KEY);
+        descriminators.add(EodStagingData.HISTOLOGY_KEY);
+
+        for (String id : _STAGING.getSchemaIds()) {
+            StagingSchema schema = _STAGING.getSchema(id);
+            if (schema.getSchemaDiscriminators() != null)
+                descriminators.addAll(schema.getSchemaDiscriminators());
+        }
+
+        assertThat(descriminators).containsExactlyInAnyOrder(
+                EodStagingData.PRIMARY_SITE_KEY,
+                EodStagingData.HISTOLOGY_KEY,
+                EodInput.SEX.toString(),
+                EodInput.BEHAVIOR.toString(),
+                EodInput.DISCRIMINATOR_1.toString(),
+                EodInput.DISCRIMINATOR_2.toString());
     }
 
     @Test
@@ -222,6 +246,19 @@ public abstract class StagingTest {
         }
 
         assertNoErrors(errors, "input values and their assocated validation tables");
+    }
+
+    @Test
+    public void testBehaviorDescriminator() {
+        // test valid combination that requires discriminator and a good discriminator is supplied
+        EodSchemaLookup lookup = new EodSchemaLookup("C717", "9591");
+        List<StagingSchema> lookups = _STAGING.lookupSchema(lookup);
+        assertThat(lookups).hasSize(3);
+        lookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "1");
+        lookup.setInput(EodInput.BEHAVIOR.toString(), "3");
+        lookups = _STAGING.lookupSchema(lookup);
+        assertThat(lookups).hasSize(1);
+        assertThat(lookups.get(0).getId()).isEqualTo("hemeretic");
     }
 
     /**
