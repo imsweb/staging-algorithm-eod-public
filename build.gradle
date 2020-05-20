@@ -1,10 +1,10 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
-    id "com.github.spotbugs" version "3.0.0"
+    id "com.github.spotbugs" version "4.2.1"
     id 'com.bmuschko.nexus' version '2.3.1'
-    id "com.github.ben-manes.versions" version "0.27.0"
-    id "io.codearte.nexus-staging" version "0.21.1"  // logs into Sonotype OSS and does a "Close" and "Release"
+    id "com.github.ben-manes.versions" version "0.28.0"
+    id "io.codearte.nexus-staging" version "0.21.2"  // logs into Sonotype OSS and does a "Close" and "Release"
     id 'com.adarshr.test-logger' version '2.0.0'
 }
 
@@ -32,10 +32,10 @@ repositories {
 dependencies {
     api 'com.imsweb:staging-client-java:4.7'
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.assertj:assertj-core:3.14.0'
-    testImplementation 'com.squareup.retrofit2:retrofit:2.7.0'
-    testImplementation 'com.squareup.retrofit2:converter-jackson:2.7.0'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.assertj:assertj-core:3.16.1'
+    testImplementation 'com.squareup.retrofit2:retrofit:2.8.2'
+    testImplementation 'com.squareup.retrofit2:converter-jackson:2.8.2'
 }
 
 jar {
@@ -65,7 +65,7 @@ checkstyle {
 }
 
 spotbugs {
-    toolVersion = '3.1.12'
+    toolVersion = '4.0.3'
     excludeFilter = file('config/spotbugs/spotbugs-exclude.xml')
 }
 
@@ -74,7 +74,7 @@ if (version.endsWith('-SNAPSHOT'))
     gradle.startParameter.excludedTaskNames += 'closeAndReleaseRepository'
 
 wrapper {
-    gradleVersion = '6.0.1'
+    gradleVersion = '6.4.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
