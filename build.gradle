@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
-    id "com.github.spotbugs" version "4.2.1"
+    id "com.github.spotbugs" version "4.2.4"
     id 'com.bmuschko.nexus' version '2.3.1'
     id "com.github.ben-manes.versions" version "0.28.0"
     id "io.codearte.nexus-staging" version "0.21.2"  // logs into Sonotype OSS and does a "Close" and "Release"
@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.imsweb'
-version = '1.7.4'
+version = '1.7.5-SNAPSHOT'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -34,8 +34,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.assertj:assertj-core:3.16.1'
-    testImplementation 'com.squareup.retrofit2:retrofit:2.8.2'
-    testImplementation 'com.squareup.retrofit2:converter-jackson:2.8.2'
+    testImplementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    testImplementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
 }
 
 jar {
