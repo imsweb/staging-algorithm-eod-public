@@ -207,4 +207,4 @@ The Surveillance, Epidemiology and End Results ([SEER](http://seer.cancer.gov)) 
 Program collects information on incidence, prevalence and survival from specific geographic areas representing 28 percent of the US population and reports on all
 these data plus cancer mortality data for the entire country.
 
-[1]: http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.imsweb&a=staging-algorithm-tnm&v=LATEST
+[1]: http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.imsweb&a=staging-algorithm-eod-public&v=LATEST
