@@ -44,7 +44,7 @@ public class EodStagingTest extends StagingTest {
 
     @Override
     public String getVersion() {
-        return EodVersion.v1_7.getVersion();
+        return EodVersion.v2_0.getVersion();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testBasicInitialization() {
-        assertThat(_STAGING.getSchemaIds().size()).isEqualTo(118);
+        assertThat(_STAGING.getSchemaIds().size()).isEqualTo(119);
         assertThat(_STAGING.getTableIds().size() > 0).isTrue();
 
         assertThat(_STAGING.getSchema("urethra")).isNotNull();
@@ -63,7 +63,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testVersionInitializationTypes() {
-        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_7));
+        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_0));
         assertThat(staging10.getVersion()).isEqualTo(EodDataProvider.EodVersion.LATEST.getVersion());
 
         Staging stagingLatest = Staging.getInstance(EodDataProvider.getInstance());
@@ -165,7 +165,7 @@ public class EodStagingTest extends StagingTest {
                 .map(StagingSchema::getSchemaDiscriminators)
                 .forEach(discriminators::addAll);
 
-        assertThat(discriminators).containsOnly("sex", "behavior", "discriminator_1", "discriminator_2");
+        assertThat(discriminators).containsOnly("year_dx", "sex", "behavior", "discriminator_1", "discriminator_2");
     }
 
     @Test
@@ -180,7 +180,7 @@ public class EodStagingTest extends StagingTest {
         assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
 
         // now invalidate the cache
-        EodDataProvider.getInstance(EodDataProvider.EodVersion.v1_7).invalidateCache();
+        EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_0).invalidateCache();
 
         // try the lookup again
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
@@ -219,7 +219,7 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getSchemaId()).isEqualTo("pancreas");
         assertThat(data.getErrors().size()).isEqualTo(0);
         assertThat(data.getPath().size()).isEqualTo(12);
-        assertThat(data.getOutput().size()).isEqualTo(8);
+        assertThat(data.getOutput().size()).isEqualTo(9);
 
         // check outputs
         assertThat(data.getOutput(EodOutput.DERIVED_VERSION)).isEqualTo(EodDataProvider.EodVersion.LATEST.getVersion());
@@ -263,8 +263,8 @@ public class EodStagingTest extends StagingTest {
 
         assertThat(tables).containsOnly("seer_mets_48348", "nodes_dcc", "grade_clinical_standard_non_ajcc_32473", "grade_pathological_standard_non_ajcc_5627",
                 "adnexa_uterine_other_97891", "nodes_pos_fpa", "tumor_size_pathological_25597", "tumor_size_clinical_60979", "primary_site", "histology",
-                "nodes_exam_76029", "grade_post_therapy_standard_non_ajcc_43091", "schema_selection_adnexa_uterine_other", "year_dx_validation",
-                "summary_stage_rpa", "lvi_dna_56663", "tumor_size_summary_63115", "extension_bcn");
+                "nodes_exam_76029", "grade_post_therapy_clin_69737", "grade_post_therapy_path_75348", "schema_selection_adnexa_uterine_other",
+                "year_dx_validation", "summary_stage_rpa", "lvi_dna_56663", "tumor_size_summary_63115", "extension_bcn");
     }
 
     @Test
@@ -397,8 +397,8 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getSchemaId()).isEqualTo("brain");
         assertThat(data.getErrors().size()).isEqualTo(5);
         assertThat(data.getPath().size()).isEqualTo(5);
-        assertThat(data.getOutput().size()).isEqualTo(8);
-        assertThat(data.getOutput().get(EodOutput.DERIVED_VERSION.toString())).isEqualTo("1.7");
+        assertThat(data.getOutput().size()).isEqualTo(9);
+        assertThat(data.getOutput().get(EodOutput.DERIVED_VERSION.toString())).isEqualTo("2.0");
     }
 
     @Test

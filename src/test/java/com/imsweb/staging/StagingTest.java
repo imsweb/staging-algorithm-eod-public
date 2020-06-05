@@ -140,6 +140,7 @@ public abstract class StagingTest {
                 EodStagingData.HISTOLOGY_KEY,
                 EodInput.SEX.toString(),
                 EodInput.BEHAVIOR.toString(),
+                EodInput.DX_YEAR.toString(),
                 EodInput.DISCRIMINATOR_1.toString(),
                 EodInput.DISCRIMINATOR_2.toString());
     }
@@ -164,12 +165,16 @@ public abstract class StagingTest {
             assertThat(provider.getValidSites().contains(site)).isFalse();
 
         // hist tests
-        List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992");
-        List<String> invalidHist = Arrays.asList("8006", "9993");
+        List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992", "9993");
+        List<String> invalidHist = Arrays.asList("8006", "8444");
         for (String hist : validHist)
-            assertThat(provider.getValidHistologies().contains(hist)).isTrue();
+            assertThat(provider.getValidHistologies().contains(hist))
+                    .withFailMessage("The histology '" + hist + "' is not in the valid histology list")
+                    .isTrue();
         for (String hist : invalidHist)
-            assertThat(provider.getValidHistologies().contains(hist)).isFalse();
+            assertThat(provider.getValidHistologies().contains(hist))
+                    .withFailMessage("The histology '" + hist + "' is not supposed to be in the valid histology list")
+                    .isFalse();
     }
 
     @Test

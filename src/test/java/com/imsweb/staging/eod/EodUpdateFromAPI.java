@@ -13,7 +13,7 @@ public class EodUpdateFromAPI {
     private static final String _ALGORITHM = "eod";
 
     public static void main(String[] args) throws IOException {
-        UpdaterUtils.update(_ALGORITHM, EodVersion.v1_7.getVersion());
+        UpdaterUtils.update(_ALGORITHM, EodVersion.v2_0.getVersion());
     }
 
 }
