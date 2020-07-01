@@ -1,17 +1,17 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
-    id "com.github.spotbugs" version "4.3.0"
+    id "com.github.spotbugs" version "4.4.4"
     id 'maven-publish'
     id 'signing'
     id "io.codearte.nexus-staging" version "0.21.2"  // logs into Sonotype OSS and does a "Close" and "Release"
-    id 'com.adarshr.test-logger' version '2.0.0'
+    id 'com.adarshr.test-logger' version '2.1.0'
     id "com.github.ben-manes.versions" version "0.28.0"
     id "org.owasp.dependencycheck" version "5.3.2.1"
 }
 
 group = 'com.imsweb'
-version = '2.1-SNAPSHOT'
+version = '2.0.1'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -32,9 +32,9 @@ repositories {
 }
 
 dependencies {
-    spotbugs 'com.github.spotbugs:spotbugs:4.0.4'
+    spotbugs 'com.github.spotbugs:spotbugs:4.0.6'
 
-    api 'com.imsweb:staging-client-java:4.7'
+    api 'com.imsweb:staging-client-java:4.8'
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.assertj:assertj-core:3.16.1'
@@ -159,6 +159,6 @@ nexusStaging {
 }
 
 wrapper {
-    gradleVersion = '6.5'
+    gradleVersion = '6.5.1'
     distributionType = Wrapper.DistributionType.ALL
 }
