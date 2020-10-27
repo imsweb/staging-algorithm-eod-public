@@ -129,8 +129,7 @@ assertEquals("soft_tissue_other", lookup.get(0).getId());
 ```
 
 If the call returns a single result, then it was successful.  If it returns more than one result, then it needs a discriminator.  Information about the 
-required discriminator is included in the list of results.  In the Collaborative Staging example, the field `ssf25` is always used as the discriminator.  
-Other staging algorithms may use different sets of discriminators that can be determined based on the result.
+required discriminator is included in the list of results.  In the followung example, the field `discriminator_1` and `discriminator_2` are used as a discriminators.
 
 ```java
 lookup = staging.lookupSchema(new EodSchemaLookup("C111", "8200"));
@@ -163,7 +162,7 @@ assertEquals("oropharynx_p16_neg", lookup.get(0).getId());
 Staging a case requires first knowing which schema you are working with.  Once you have the schema, you can tell which fields (keys) need to be collected and supplied
 to the `stage` method call.
 
-A `StagingData` object is used to make staging calls.  All inputs to staging should be set on the `StagingData` object and the staging call will add the results.  The
+An `EodStagingData` object is used to make staging calls.  All inputs to staging should be set on the `EodStagingData` object and the staging call will add the results.  The
 results include:
 
 - output - all output values resulting from the calculation
