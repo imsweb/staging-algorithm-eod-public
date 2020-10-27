@@ -233,6 +233,48 @@ public class EodStagingTest extends StagingTest {
     }
 
     @Test
+    public void testStageDefaultSsdi() {
+        EodStagingData data = new EodStagingInputBuilder()
+                .withInput(EodInput.PRIMARY_SITE, "C502")
+                .withInput(EodInput.HISTOLOGY, "8500")
+                .withInput(EodInput.BEHAVIOR, "3")
+                .withInput(EodInput.DX_YEAR, "2020")
+                .withInput(EodInput.TUMOR_SIZE_SUMMARY, "025")
+                .withInput(EodInput.EOD_PRIMARY_TUMOR, "100")
+                .withInput(EodInput.EOD_REGIONAL_NODES, "200")
+                .withInput(EodInput.EOD_METS, "00")
+                .withInput(EodInput.GRADE_CLIN, "1")
+                .withInput(EodInput.GRADE_PATH, "1")
+                .build();
+
+        // add SSDIs
+        // - Lymph Nodes Pos Axillary Level I-II: leave blank, should default to X8)
+        // - Oncotype DX Recur Score: leave blank, should default to XX9
+        data.setInput("er", "1");
+        data.setInput("pr", "0");
+        data.setInput("her2_summary", "0");
+
+        // perform the staging
+        _STAGING.stage(data);
+
+        assertThat(data.getResult()).isEqualTo(StagingData.Result.STAGED);
+        assertThat(data.getSchemaId()).isEqualTo("breast");
+        assertThat(data.getErrors().size()).isEqualTo(0);
+        assertThat(data.getPath().size()).isEqualTo(16);
+        assertThat(data.getOutput().size()).isEqualTo(9);
+
+        // check outputs
+        assertThat(data.getOutput(EodOutput.DERIVED_VERSION)).isEqualTo(EodDataProvider.EodVersion.LATEST.getVersion());
+        assertThat(data.getOutput(EodOutput.SS_2018_DERIVED)).isEqualTo("3");
+        assertThat(data.getOutput(EodOutput.NAACCR_SCHEMA_ID)).isEqualTo("00480");
+        assertThat(data.getOutput(EodOutput.EOD_2018_STAGE_GROUP)).isEqualTo("2B");
+        assertThat(data.getOutput(EodOutput.EOD_2018_T)).isEqualTo("T2");
+        assertThat(data.getOutput(EodOutput.EOD_2018_N)).isEqualTo("N1");
+        assertThat(data.getOutput(EodOutput.EOD_2018_M)).isEqualTo("M0");
+        assertThat(data.getOutput(EodOutput.AJCC_ID)).isEqualTo("48.2");
+    }
+
+    @Test
     public void testBadLookupInStage() {
         EodStagingData data = new EodStagingData();
 
