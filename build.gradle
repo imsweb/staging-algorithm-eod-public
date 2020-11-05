@@ -29,17 +29,23 @@ java {
 
 repositories {
     mavenCentral()
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
 }
 
 dependencies {
     spotbugs 'com.github.spotbugs:spotbugs:4.1.4'
 
-    api 'com.imsweb:staging-client-java:4.8'
+    api 'com.imsweb:staging-client-java:5.0-SNAPSHOT'
+    runtimeOnly('com.imsweb:staging-client-java:5.0-SNAPSHOT') {
+        capabilities {
+            requireCapability("com.imsweb:staging-client-java-update-support")
+        }
+    }
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.assertj:assertj-core:3.18.0'
-    testImplementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    testImplementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
 }
 
 jar {
