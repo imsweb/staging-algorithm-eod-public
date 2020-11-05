@@ -20,6 +20,7 @@ import com.imsweb.staging.StagingData;
 import com.imsweb.staging.StagingData.Result;
 import com.imsweb.staging.StagingFileDataProvider;
 import com.imsweb.staging.StagingTest;
+import com.imsweb.staging.entities.GlossaryDefinition;
 import com.imsweb.staging.entities.StagingSchema;
 import com.imsweb.staging.entities.StagingSchemaOutput;
 import com.imsweb.staging.entities.StagingTable;
@@ -29,6 +30,9 @@ import com.imsweb.staging.eod.EodStagingData.EodOutput;
 import com.imsweb.staging.eod.EodStagingData.EodStagingInputBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class EodStagingTest extends StagingTest {
 
@@ -464,4 +468,14 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getOutput().size()).isEqualTo(0);
     }
 
+    @Test
+    public void testGlossary() {
+        assertEquals(19, _STAGING.getGlossaryTerms().size());
+        GlossaryDefinition entry = _STAGING.getGlossaryDefinition("Medulla");
+        assertNotNull(entry);
+        assertEquals("Medulla", entry.getName());
+        assertTrue(entry.getDefinition().startsWith("The central portion of an organ, in contrast to the outer layer"));
+        assertEquals(Collections.singletonList("Medullary"), entry.getAlternateNames());
+        assertNotNull(entry.getLastModified());
+    }
 }
