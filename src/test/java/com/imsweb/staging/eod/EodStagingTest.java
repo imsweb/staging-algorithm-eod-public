@@ -477,5 +477,10 @@ public class EodStagingTest extends StagingTest {
         assertTrue(entry.getDefinition().startsWith("The central portion of an organ, in contrast to the outer layer"));
         assertEquals(Collections.singletonList("Medullary"), entry.getAlternateNames());
         assertNotNull(entry.getLastModified());
+
+        Set<String> hits = _STAGING.getSchemaGlossary("urethra");
+        assertEquals(1, hits.size());
+        hits = _STAGING.getTableGlossary("extension_baj");
+        assertEquals(2, hits.size());
     }
 }

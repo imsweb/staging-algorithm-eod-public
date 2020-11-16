@@ -37,9 +37,9 @@ repositories {
 dependencies {
     spotbugs 'com.github.spotbugs:spotbugs:4.1.4'
 
-    api 'com.imsweb:staging-client-java:5.0.2-SNAPSHOT'
+    api 'com.imsweb:staging-client-java:5.0.4-SNAPSHOT'
 
-    testImplementation('com.imsweb:staging-client-java:5.0.2-SNAPSHOT') {
+    testImplementation('com.imsweb:staging-client-java:5.0.4-SNAPSHOT') {
         capabilities {
             requireCapability("com.imsweb:staging-client-java-update-support")
         }
