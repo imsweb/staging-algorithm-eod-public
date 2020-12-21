@@ -470,7 +470,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testGlossary() {
-        assertEquals(19, _STAGING.getGlossaryTerms().size());
+        assertEquals(23, _STAGING.getGlossaryTerms().size());
         GlossaryDefinition entry = _STAGING.getGlossaryDefinition("Medulla");
         assertNotNull(entry);
         assertEquals("Medulla", entry.getName());
@@ -481,6 +481,6 @@ public class EodStagingTest extends StagingTest {
         Set<String> hits = _STAGING.getSchemaGlossary("urethra");
         assertEquals(1, hits.size());
         hits = _STAGING.getTableGlossary("extension_baj");
-        assertEquals(2, hits.size());
+        assertEquals(3, hits.size());
     }
 }
