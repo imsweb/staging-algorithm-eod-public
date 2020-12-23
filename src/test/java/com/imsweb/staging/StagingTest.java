@@ -27,6 +27,7 @@ import com.imsweb.staging.entities.StagingTableRow;
 import com.imsweb.staging.eod.EodSchemaLookup;
 import com.imsweb.staging.eod.EodStagingData;
 import com.imsweb.staging.eod.EodStagingData.EodInput;
+import com.imsweb.staging.eod.EodStagingData.EodOutput;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -264,6 +265,25 @@ public abstract class StagingTest {
         lookups = _STAGING.lookupSchema(lookup);
         assertThat(lookups).hasSize(1);
         assertThat(lookups.get(0).getId()).isEqualTo("hemeretic");
+    }
+
+    @Test
+    public void testStagingEnums() {
+        Set<String> enumInput = Arrays.stream(EodInput.values()).map(EodInput::toString).collect(Collectors.toSet());
+        Set<String> enumOutput = Arrays.stream(EodOutput.values()).map(EodOutput::toString).collect(Collectors.toSet());
+
+        // collect all input and output fields from all schemas
+        Set<String> schemaInput = new HashSet<>();
+        Set<String> schemaOutput = new HashSet<>();
+        for (String schemaId : _STAGING.getSchemaIds()) {
+            StagingSchema schema = _STAGING.getSchema(schemaId);
+
+            schemaInput.addAll(_STAGING.getInputs(schema));
+            schemaOutput.addAll(_STAGING.getOutputs(schema));
+        }
+
+        assertThat(schemaInput).hasSameElementsAs(enumInput);
+        assertThat(schemaOutput).hasSameElementsAs(enumOutput);
     }
 
     /**
