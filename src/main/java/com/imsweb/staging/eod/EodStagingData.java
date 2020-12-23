@@ -76,7 +76,7 @@ public class EodStagingData extends StagingData {
         return getOutput(key.toString());
     }
 
-    // input key definitions
+    // input key definitions; note this only includes keys that are required for staging
     public enum EodInput {
         PRIMARY_SITE("site"),
         HISTOLOGY("hist"),
@@ -86,22 +86,38 @@ public class EodStagingData extends StagingData {
         DISCRIMINATOR_1("discriminator_1"),
         DISCRIMINATOR_2("discriminator_2"),
         NODES_POS("nodes_pos"),
-        NODES_EXAM("nodes_exam"),
         EOD_PRIMARY_TUMOR("eod_primary_tumor"),
         EOD_REGIONAL_NODES("eod_regional_nodes"),
         EOD_METS("eod_mets"),
         GRADE_CLIN("grade_clin"),
         GRADE_PATH("grade_path"),
-        GRADE_POST_THERAPY("grade_post_therapy"),
+        GRADE_POST_THERAPY_CLIN("grade_post_therapy_clin"),
+        GRADE_POST_THERAPY_PATH("grade_post_therapy_path"),
         DX_YEAR("year_dx"),
-        TUMOR_SIZE_CLIN("size_clin"),
-        TUMOR_SIZE_PATH("size_path"),
         TUMOR_SIZE_SUMMARY("size_summary"),
         RADIATION_SURG_SEQ("radiation_surg_seq"),
         SYSTEMIC_SURG_SEQ("systemic_surg_seq"),
-        SS_2018("ss2018");
+        BRESLOW_THINKNESS("breslow_thickness"),
+        EOD_PROSTATE_PATH_EXTENSION("eod_prostate_path_extension"),
+        ER("er"),
+        ESOPH_TUMOR_EPICENTER("esoph_tumor_epicenter"),
+        GESTATIONAL_PROG_INDEX("gestational_prog_index"),
+        HER2_SUMMARY("her2_summary"),
+        LDH_LEVEL("ldh_level"),
+        LN_POS_AXILLARY_LEVEL_1_2("ln_pos_axillary_level_1_2"),
+        LN_SIZE_OF_METS("ln_size_of_mets"),
+        MEASURED_BASAL_DIAMETER("measured_basal_diameter"),
+        MEASURED_THICKNESS("measured_thickness"),
+        ONCOTYPE_DX_SCORE("oncotype_dx_score"),
+        PERIPHERAL_BLOOD_INVOLV("peripheral_blood_involv"),
+        PERITONEAL_CYTOLOGY("peritoneal_cytology"),
+        PR("pr"),
+        PSA("psa"),
+        S_CATEGORY_CLIN("s_category_clin"),
+        S_CATEGORY_PATH("s_category_path"),
+        ULCERATION("ulceration");
 
-        private String _name;
+        private final String _name;
 
         EodInput(String name) {
             _name = name;
@@ -117,6 +133,7 @@ public class EodStagingData extends StagingData {
     public enum EodOutput {
         NAACCR_SCHEMA_ID("naaccr_schema_id"),
         AJCC_ID("ajcc_id"),
+        AJCC_VERSION_NUMBER("ajcc_version_number"),
         DERIVED_VERSION("derived_version"),
         EOD_2018_T("eod_2018_t"),
         EOD_2018_N("eod_2018_n"),
@@ -124,7 +141,7 @@ public class EodStagingData extends StagingData {
         EOD_2018_STAGE_GROUP("eod_2018_stage_group"),
         SS_2018_DERIVED("ss2018_derived");
 
-        private String _name;
+        private final String _name;
 
         EodOutput(String name) {
             _name = name;
@@ -137,11 +154,11 @@ public class EodStagingData extends StagingData {
     }
 
     /**
-     * TnmStagingInputBuilder builder
+     * EodStagingInputBuilder builder
      */
     public static class EodStagingInputBuilder {
 
-        private EodStagingData _data;
+        private final EodStagingData _data;
 
         public EodStagingInputBuilder() {
             _data = new EodStagingData();
