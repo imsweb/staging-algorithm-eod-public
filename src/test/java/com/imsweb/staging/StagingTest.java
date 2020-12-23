@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.imsweb.staging.entities.StagingMapping;
 import com.imsweb.staging.entities.StagingRange;
 import com.imsweb.staging.entities.StagingSchema;
 import com.imsweb.staging.entities.StagingSchemaInput;
+import com.imsweb.staging.entities.StagingSchemaOutput;
 import com.imsweb.staging.entities.StagingTable;
 import com.imsweb.staging.entities.StagingTableRow;
 import com.imsweb.staging.eod.EodSchemaLookup;
@@ -284,6 +286,53 @@ public abstract class StagingTest {
 
         assertThat(schemaInput).hasSameElementsAs(enumInput);
         assertThat(schemaOutput).hasSameElementsAs(enumOutput);
+    }
+
+    @Test
+    public void testNaaccrXmlIds() {
+        List<String> errors = new ArrayList<>();
+
+        Map<String, Set<String>> inputMappings = new HashMap<>();
+        Map<String, Set<String>> outputMappings = new HashMap<>();
+        for (String schemaId : _STAGING.getSchemaIds()) {
+            StagingSchema schema = _STAGING.getSchema(schemaId);
+
+            for (StagingSchemaInput input : schema.getInputs()) {
+                if (input.getNaaccrItem() != null && input.getNaaccrXmlId() == null)
+                    errors.add("Schema input " + schema.getId() + "." + input.getKey() + " has a NAACCR number but is missing NAACCR XML ID");
+
+                if (input.getNaaccrXmlId() != null) {
+                    if (inputMappings.containsKey(input.getNaaccrXmlId()))
+                        inputMappings.get(input.getNaaccrXmlId()).add(input.getKey());
+                    else
+                        inputMappings.put(input.getNaaccrXmlId(), new HashSet<>(Collections.singletonList(input.getKey())));
+                }
+            }
+
+            for (StagingSchemaOutput output : schema.getOutputs()) {
+                if (output.getNaaccrItem() != null && output.getNaaccrXmlId() == null)
+                    errors.add("Schema output " + schema.getId() + "." + output.getKey() + " has a NAACCR number but is missing NAACCR XML ID");
+
+                if (output.getNaaccrXmlId() != null) {
+                    if (outputMappings.containsKey(output.getNaaccrXmlId()))
+                        outputMappings.get(output.getNaaccrXmlId()).add(output.getKey());
+                    else
+                        outputMappings.put(output.getNaaccrXmlId(), new HashSet<>(Collections.singletonList(output.getKey())));
+                }
+            }
+        }
+
+        // verify that if a field has a given NAACCR XML ID, then all fields with that same XML ID have the same key.
+        inputMappings.forEach((k, v) -> {
+            if (v.size() > 1)
+                errors.add("NAACCR XML Id " + k + " is listed for multiple inputs: " + v);
+        });
+        outputMappings.forEach((k, v) -> {
+            if (v.size() > 1)
+                errors.add("NAACCR XML Id " + k + " is listed for multiple outputs: " + v);
+        });
+
+        assertThat(errors).overridingErrorMessage(() -> "\n" + String.join("\n", errors)).isEmpty();
     }
 
     /**
