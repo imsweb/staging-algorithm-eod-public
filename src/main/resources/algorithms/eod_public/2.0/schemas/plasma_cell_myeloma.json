@@ -185,7 +185,7 @@
     "used_for_staging" : false,
     "metadata" : [ "COC_REQUIRED", "SSDI", "CCCR_REQUIRED", "SEER_REQUIRED" ]
   }, {
-    "key" : "ldh_pretx_level",
+    "key" : "ldh_level",
     "name" : "LDH (Lactate Dehydrogenase) Pretreatment Level",
     "naaccr_item" : 3869,
     "naaccr_xml_id" : "ldhPretreatmentLevel",
