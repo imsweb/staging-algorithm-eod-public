@@ -141,7 +141,7 @@ public class EodStagingData extends StagingData {
         EOD_2018_STAGE_GROUP("eod_2018_stage_group"),
         SS_2018_DERIVED("ss2018_derived");
 
-        private String _name;
+        private final String _name;
 
         EodOutput(String name) {
             _name = name;
@@ -154,11 +154,11 @@ public class EodStagingData extends StagingData {
     }
 
     /**
-     * TnmStagingInputBuilder builder
+     * EodStagingInputBuilder builder
      */
     public static class EodStagingInputBuilder {
 
-        private EodStagingData _data;
+        private final EodStagingData _data;
 
         public EodStagingInputBuilder() {
             _data = new EodStagingData();
