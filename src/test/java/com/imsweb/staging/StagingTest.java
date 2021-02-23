@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import com.imsweb.decisionengine.ColumnDefinition;
+import com.imsweb.staging.StagingData.Result;
 import com.imsweb.staging.entities.StagingColumnDefinition;
 import com.imsweb.staging.entities.StagingMapping;
 import com.imsweb.staging.entities.StagingRange;
@@ -33,6 +34,7 @@ import com.imsweb.staging.eod.EodStagingData.EodOutput;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Base class for all algorithm-specific testing
@@ -333,6 +335,33 @@ public abstract class StagingTest {
         });
 
         assertThat(errors).overridingErrorMessage(() -> "\n" + String.join("\n", errors)).isEmpty();
+    }
+
+    @Test
+    public void testMisspelledProperty() {
+        EodStagingData data = new EodStagingData();
+        data.setInput(EodInput.DX_YEAR, "2020");
+        data.setInput(EodInput.PRIMARY_SITE, "C180");
+        data.setInput(EodInput.HISTOLOGY, "8154");
+        data.setInput(EodInput.NODES_POS, "04");
+        data.setInput(EodInput.EOD_PRIMARY_TUMOR, "200");
+        data.setInput(EodInput.EOD_REGIONAL_NODES, "300");
+        data.setInput(EodInput.EOD_METS, "40");
+
+        // perform the staging
+        _STAGING.stage(data);
+
+        assertEquals(Result.STAGED, data.getResult());
+        assertEquals("colon_rectum", data.getSchemaId());
+        assertEquals(0, data.getErrors().size());
+        assertEquals(8, data.getPath().size());
+
+        // check output
+        assertEquals("00200", data.getOutput(EodOutput.NAACCR_SCHEMA_ID));
+        assertEquals("2.0", data.getOutput(EodOutput.DERIVED_VERSION));
+
+        // before the bug fix, AJCC_VERSION_NUMBER was returning an empty string
+        assertEquals("88", data.getOutput(EodOutput.AJCC_VERSION_NUMBER));
     }
 
     /**
