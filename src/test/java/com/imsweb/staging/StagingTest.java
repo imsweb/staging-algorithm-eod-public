@@ -342,7 +342,7 @@ public abstract class StagingTest {
         EodStagingData data = new EodStagingData();
         data.setInput(EodInput.DX_YEAR, "2020");
         data.setInput(EodInput.PRIMARY_SITE, "C180");
-        data.setInput(EodInput.HISTOLOGY, "8180");
+        data.setInput(EodInput.HISTOLOGY, "8000");
         data.setInput(EodInput.NODES_POS, "90");
         data.setInput(EodInput.EOD_PRIMARY_TUMOR, "700");
         data.setInput(EodInput.EOD_REGIONAL_NODES, "300");
@@ -354,14 +354,20 @@ public abstract class StagingTest {
         assertEquals(Result.STAGED, data.getResult());
         assertEquals("colon_rectum", data.getSchemaId());
         assertEquals(0, data.getErrors().size());
-        assertEquals(8, data.getPath().size());
-
-        // check output
-        assertEquals("00200", data.getOutput(EodOutput.NAACCR_SCHEMA_ID));
-        assertEquals("2.0", data.getOutput(EodOutput.DERIVED_VERSION));
+        assertEquals(11, data.getPath().size());
 
         // before the bug fix, AJCC_VERSION_NUMBER was returning an empty string
-        assertEquals("88", data.getOutput(EodOutput.AJCC_VERSION_NUMBER));
+        assertEquals("08", data.getOutput(EodOutput.AJCC_VERSION_NUMBER));
+
+        // check other output
+        assertEquals("00200", data.getOutput(EodOutput.NAACCR_SCHEMA_ID));
+        assertEquals("4A", data.getOutput(EodOutput.EOD_2018_STAGE_GROUP));
+        assertEquals("2.0", data.getOutput(EodOutput.DERIVED_VERSION));
+        assertEquals("7", data.getOutput(EodOutput.SS_2018_DERIVED));
+        assertEquals("T4b", data.getOutput(EodOutput.EOD_2018_T));
+        assertEquals("N2b", data.getOutput(EodOutput.EOD_2018_N));
+        assertEquals("M1a", data.getOutput(EodOutput.EOD_2018_M));
+        assertEquals("20", data.getOutput(EodOutput.AJCC_ID));
     }
 
     /**
