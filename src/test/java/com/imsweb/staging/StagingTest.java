@@ -342,11 +342,11 @@ public abstract class StagingTest {
         EodStagingData data = new EodStagingData();
         data.setInput(EodInput.DX_YEAR, "2020");
         data.setInput(EodInput.PRIMARY_SITE, "C180");
-        data.setInput(EodInput.HISTOLOGY, "8154");
-        data.setInput(EodInput.NODES_POS, "04");
-        data.setInput(EodInput.EOD_PRIMARY_TUMOR, "200");
+        data.setInput(EodInput.HISTOLOGY, "8180");
+        data.setInput(EodInput.NODES_POS, "90");
+        data.setInput(EodInput.EOD_PRIMARY_TUMOR, "700");
         data.setInput(EodInput.EOD_REGIONAL_NODES, "300");
-        data.setInput(EodInput.EOD_METS, "40");
+        data.setInput(EodInput.EOD_METS, "10");
 
         // perform the staging
         _STAGING.stage(data);
