@@ -39,7 +39,7 @@ dependencies {
 
     api 'com.imsweb:staging-client-java:5.0.5'
 
-    testImplementation('com.imsweb:staging-client-java:5.0') {
+    testImplementation('com.imsweb:staging-client-java:5.0.5') {
         capabilities {
             requireCapability("com.imsweb:staging-client-java-update-support")
         }
