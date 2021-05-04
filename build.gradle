@@ -1,13 +1,13 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
-    id "com.github.spotbugs" version "4.6.2"
+    id "com.github.spotbugs" version "4.7.1"
     id 'maven-publish'
     id 'signing'
-    id 'io.codearte.nexus-staging' version '0.22.0'  // logs into Sonotype OSS and does a "Close" and "Release"
-    id 'com.adarshr.test-logger' version '2.1.1'
-    id 'com.github.ben-manes.versions' version '0.36.0'
-    id 'org.sonatype.gradle.plugins.scan' version '2.0.4'
+    id 'io.codearte.nexus-staging' version '0.30.0'  // logs into Sonotype OSS and does a "Close" and "Release"
+    id 'com.adarshr.test-logger' version '3.0.0'
+    id 'com.github.ben-manes.versions' version '0.38.0'
+    id 'org.sonatype.gradle.plugins.scan' version '2.0.8'
 }
 
 group = 'com.imsweb'
@@ -35,11 +35,11 @@ repositories {
 }
 
 dependencies {
-    spotbugs 'com.github.spotbugs:spotbugs:4.2.1'
+    spotbugs 'com.github.spotbugs:spotbugs:4.2.3'
 
-    api 'com.imsweb:staging-client-java:5.0.5'
+    api 'com.imsweb:staging-client-java:5.0.4'
 
-    testImplementation('com.imsweb:staging-client-java:5.0.5') {
+    testImplementation('com.imsweb:staging-client-java:5.0.4') {
         capabilities {
             requireCapability("com.imsweb:staging-client-java-update-support")
         }
@@ -167,6 +167,6 @@ nexusStaging {
 }
 
 wrapper {
-    gradleVersion = '6.8.2'
+    gradleVersion = '7.0'
     distributionType = Wrapper.DistributionType.ALL
 }
