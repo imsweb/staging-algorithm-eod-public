@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.imsweb.decisionengine.ColumnDefinition;
-import com.imsweb.decisionengine.Input;
-import com.imsweb.decisionengine.Mapping;
-import com.imsweb.decisionengine.Output;
-import com.imsweb.decisionengine.Schema;
-import com.imsweb.decisionengine.Table;
-import com.imsweb.staging.StagingData.Result;
+import com.imsweb.staging.entities.ColumnDefinition;
+import com.imsweb.staging.entities.Input;
+import com.imsweb.staging.entities.Mapping;
+import com.imsweb.staging.entities.Output;
+import com.imsweb.staging.entities.Schema;
+import com.imsweb.staging.entities.StagingData.Result;
+import com.imsweb.staging.entities.Table;
 import com.imsweb.staging.eod.EodSchemaLookup;
 import com.imsweb.staging.eod.EodStagingData;
 import com.imsweb.staging.eod.EodStagingData.EodInput;
