@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'com.imsweb'
-version = '2.0.7'
+version = '2.0.8'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
