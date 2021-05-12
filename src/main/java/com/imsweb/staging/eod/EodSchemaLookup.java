@@ -8,18 +8,24 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.imsweb.staging.SchemaLookup;
-import com.imsweb.staging.eod.EodStagingData.EodInput;
+import com.imsweb.staging.entities.SchemaLookup;
+
+import static com.imsweb.staging.entities.StagingData.HISTOLOGY_KEY;
+import static com.imsweb.staging.entities.StagingData.PRIMARY_SITE_KEY;
+import static com.imsweb.staging.eod.EodStagingData.EodInput.BEHAVIOR;
+import static com.imsweb.staging.eod.EodStagingData.EodInput.DISCRIMINATOR_1;
+import static com.imsweb.staging.eod.EodStagingData.EodInput.DISCRIMINATOR_2;
+import static com.imsweb.staging.eod.EodStagingData.EodInput.SEX;
 
 public class EodSchemaLookup extends SchemaLookup {
 
     private static final Set<String> _ALLOWED_KEYS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-            EodStagingData.PRIMARY_SITE_KEY,
-            EodStagingData.HISTOLOGY_KEY,
-            EodInput.SEX.toString(),
-            EodInput.BEHAVIOR.toString(),
-            EodInput.DISCRIMINATOR_1.toString(),
-            EodInput.DISCRIMINATOR_2.toString())));
+            PRIMARY_SITE_KEY,
+            HISTOLOGY_KEY,
+            SEX.toString(),
+            BEHAVIOR.toString(),
+            DISCRIMINATOR_1.toString(),
+            DISCRIMINATOR_2.toString())));
 
     /**
      * Constructor

@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'com.imsweb'
-version = '2.0.7'
+version = '2.0.8'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -29,15 +29,12 @@ java {
 
 repositories {
     mavenCentral()
-//    maven {
-//        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-//    }
 }
 
 dependencies {
     spotbugs 'com.github.spotbugs:spotbugs:4.2.3'
 
-    api 'com.imsweb:staging-client-java:5.0.6'
+    api 'com.imsweb:staging-client-java:6.0.0'
 
     testImplementation('com.imsweb:staging-client-java:5.0.6') {
         capabilities {
@@ -167,6 +164,6 @@ nexusStaging {
 }
 
 wrapper {
-    gradleVersion = '7.0'
+    gradleVersion = '7.0.1'
     distributionType = Wrapper.DistributionType.ALL
 }

@@ -8,22 +8,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.imsweb.staging.SchemaLookup;
 import com.imsweb.staging.Staging;
-import com.imsweb.staging.StagingData;
-import com.imsweb.staging.StagingData.Result;
 import com.imsweb.staging.StagingFileDataProvider;
 import com.imsweb.staging.StagingTest;
 import com.imsweb.staging.entities.GlossaryDefinition;
-import com.imsweb.staging.entities.StagingSchema;
-import com.imsweb.staging.entities.StagingSchemaOutput;
-import com.imsweb.staging.entities.StagingTable;
+import com.imsweb.staging.entities.Output;
+import com.imsweb.staging.entities.Schema;
+import com.imsweb.staging.entities.SchemaLookup;
+import com.imsweb.staging.entities.StagingData;
+import com.imsweb.staging.entities.StagingData.Result;
+import com.imsweb.staging.entities.Table;
 import com.imsweb.staging.eod.EodDataProvider.EodVersion;
 import com.imsweb.staging.eod.EodStagingData.EodInput;
 import com.imsweb.staging.eod.EodStagingData.EodOutput;
@@ -83,7 +84,7 @@ public class EodStagingTest extends StagingTest {
     @Test
     public void testSchemaSelection() {
         // test bad values
-        List<StagingSchema> lookup = _STAGING.lookupSchema(new SchemaLookup());
+        List<Schema> lookup = _STAGING.lookupSchema(new SchemaLookup());
         assertThat(lookup.size()).isEqualTo(0);
 
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("XXX", "YYY"));
@@ -103,7 +104,7 @@ public class EodStagingTest extends StagingTest {
         // test valid combination that requires a discriminator but is not supplied one
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C111", "8200"));
         assertThat(lookup.size()).isEqualTo(3);
-        assertThat(lookup.stream().map(StagingSchema::getId).collect(Collectors.toSet())).isEqualTo(
+        assertThat(lookup.stream().map(Schema::getId).collect(Collectors.toSet())).isEqualTo(
                 new HashSet<>(Arrays.asList("oropharynx_hpv_mediated_p16_pos", "nasopharynx", "oropharynx_p16_neg")));
         assertThat(lookup.stream().flatMap(d -> d.getSchemaDiscriminators().stream()).collect(Collectors.toSet())).isEqualTo(new HashSet<>(Arrays.asList("discriminator_1", "discriminator_2")));
 
@@ -165,8 +166,8 @@ public class EodStagingTest extends StagingTest {
         Set<String> discriminators = new HashSet<>();
         _STAGING.getSchemaIds().stream()
                 .map(schemaId -> _STAGING.getSchema(schemaId))
-                .filter(schema -> schema.getSchemaDiscriminators() != null)
-                .map(StagingSchema::getSchemaDiscriminators)
+                .map(Schema::getSchemaDiscriminators)
+                .filter(Objects::nonNull)
                 .forEach(discriminators::addAll);
 
         assertThat(discriminators).containsOnly("year_dx", "sex", "behavior", "discriminator_1", "discriminator_2");
@@ -175,7 +176,7 @@ public class EodStagingTest extends StagingTest {
     @Test
     public void testLookupCache() {
         // do the same lookup twice
-        List<StagingSchema> lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
+        List<Schema> lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
         assertThat(lookup.size()).isEqualTo(1);
         assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
 
@@ -393,14 +394,14 @@ public class EodStagingTest extends StagingTest {
     @Test
     public void testLookupOutputs() {
         EodSchemaLookup lookup = new EodSchemaLookup("C680", "8590");
-        List<StagingSchema> lookups = _STAGING.lookupSchema(lookup);
+        List<Schema> lookups = _STAGING.lookupSchema(lookup);
         assertThat(lookups.size()).isEqualTo(2);
 
-        StagingSchema schema = _STAGING.getSchema(lookups.get(0).getId());
+        Schema schema = _STAGING.getSchema(lookups.get(0).getId());
         assertThat(schema.getId()).isEqualTo("urethra");
 
         // build list of output keys
-        Set<String> definedOutputs = schema.getOutputs().stream().map(StagingSchemaOutput::getKey).collect(Collectors.toSet());
+        Set<String> definedOutputs = schema.getOutputs().stream().map(Output::getKey).collect(Collectors.toSet());
 
         // test without context
         assertThat(_STAGING.getOutputs(schema)).isEqualTo(definedOutputs);
@@ -411,7 +412,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testEncoding() {
-        StagingTable table = _STAGING.getTable("serum_alb_pretx_level_58159");
+        Table table = _STAGING.getTable("serum_alb_pretx_level_58159");
 
         assertThat(table).isNotNull();
 

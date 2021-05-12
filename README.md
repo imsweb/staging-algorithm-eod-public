@@ -30,14 +30,14 @@ Download [the latest JAR][1] or grab via Maven:
 <dependency>
     <groupId>com.imsweb</groupId>
     <artifactId>staging-algorithm-eod-public</artifactId>
-    <version>2.0.7</version>
+    <version>2.0.8</version>
 </dependency>
 ```
 
 or via Gradle:
 
 ```groovy
-compile 'com.imsweb.com:staging-algorithm-eod-public:2.0.7'
+compile 'com.imsweb.com:staging-algorithm-eod-public:2.0.8'
 ```
 
 ## Usage
@@ -80,7 +80,7 @@ Set<String> schemaIds = staging.getSchemaIds();
 To get a single schema by identifer,
 
 ```java
-StagingSchema schema = staging.getSchema("prostate");
+Schema schema = staging.getSchema("prostate");
 ```
 
 ### Tables
@@ -111,7 +111,7 @@ Set<String> tableIds = staging.getInvolvedTables("prostate");
 To get a single table by identifer,
 
 ```java
-StagingTable table = staging.getTable("ajcc7_stage");
+Table table = staging.getTable("ajcc7_stage");
 ```
 
 ### Lookup a schema

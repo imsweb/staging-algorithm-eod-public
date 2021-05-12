@@ -5,7 +5,6 @@ package com.imsweb.staging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,16 +16,13 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.imsweb.decisionengine.ColumnDefinition;
-import com.imsweb.staging.StagingData.Result;
-import com.imsweb.staging.entities.StagingColumnDefinition;
-import com.imsweb.staging.entities.StagingMapping;
-import com.imsweb.staging.entities.StagingRange;
-import com.imsweb.staging.entities.StagingSchema;
-import com.imsweb.staging.entities.StagingSchemaInput;
-import com.imsweb.staging.entities.StagingSchemaOutput;
-import com.imsweb.staging.entities.StagingTable;
-import com.imsweb.staging.entities.StagingTableRow;
+import com.imsweb.staging.entities.ColumnDefinition;
+import com.imsweb.staging.entities.Input;
+import com.imsweb.staging.entities.Mapping;
+import com.imsweb.staging.entities.Output;
+import com.imsweb.staging.entities.Schema;
+import com.imsweb.staging.entities.StagingData.Result;
+import com.imsweb.staging.entities.Table;
 import com.imsweb.staging.eod.EodSchemaLookup;
 import com.imsweb.staging.eod.EodStagingData;
 import com.imsweb.staging.eod.EodStagingData.EodInput;
@@ -67,7 +63,7 @@ public abstract class StagingTest {
     @Test
     public void testInitAllTables() {
         for (String id : _STAGING.getTableIds()) {
-            StagingTable table = _STAGING.getTable(id);
+            Table table = _STAGING.getTable(id);
 
             assertThat(table).isNotNull();
             assertThat(table.getAlgorithm()).isNotNull();
@@ -99,8 +95,8 @@ public abstract class StagingTest {
     public void testBasicInputs() {
         // all inputs for all schemas will have null unit and decimal places
         for (String id : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(id);
-            for (StagingSchemaInput input : schema.getInputs()) {
+            Schema schema = _STAGING.getSchema(id);
+            for (Input input : schema.getInputs()) {
                 assertThat(input.getUnit()).as("No schemas should have units").isNull();
                 assertThat(input.getDecimalPlaces()).as("No schemas should have decimal places").isNull();
             }
@@ -135,7 +131,7 @@ public abstract class StagingTest {
         descriminators.add(EodStagingData.HISTOLOGY_KEY);
 
         for (String id : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(id);
+            Schema schema = _STAGING.getSchema(id);
             if (schema.getSchemaDiscriminators() != null)
                 descriminators.addAll(schema.getSchemaDiscriminators());
         }
@@ -199,20 +195,20 @@ public abstract class StagingTest {
         Set<String> errors = new HashSet<>();
 
         for (String schemaId : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(schemaId);
+            Schema schema = _STAGING.getSchema(schemaId);
 
             // build a list of input tables that should be excluded
-            for (StagingSchemaInput input : schema.getInputs()) {
+            for (Input input : schema.getInputs()) {
                 if (input.getTable() != null) {
                     Set<String> inputKeys = new HashSet<>();
-                    StagingTable table = _STAGING.getTable(input.getTable());
-                    for (StagingColumnDefinition def : table.getColumnDefinitions())
+                    Table table = _STAGING.getTable(input.getTable());
+                    for (ColumnDefinition def : table.getColumnDefinitions())
                         if (ColumnDefinition.ColumnType.INPUT.equals(def.getType()))
                             inputKeys.add(def.getKey());
 
                     // make sure the input key matches the an input column
                     if (!inputKeys.contains(input.getKey()))
-                        errors.add("Input key " + schemaId + ":" + input.getKey() + " does not match validation table " + table.getId() + ": " + inputKeys.toString());
+                        errors.add("Input key " + schemaId + ":" + input.getKey() + " does not match validation table " + table.getId() + ": " + inputKeys);
                 }
             }
         }
@@ -225,7 +221,7 @@ public abstract class StagingTest {
         List<String> errors = new ArrayList<>();
 
         for (String id : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(id);
+            Schema schema = _STAGING.getSchema(id);
 
             // loop over all the inputs returned by processing the schema and make sure they are all part of the main list of inputs on the schema
             for (String input : _STAGING.getInputs(schema))
@@ -241,14 +237,13 @@ public abstract class StagingTest {
         Set<String> errors = new HashSet<>();
 
         for (String schemaId : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(schemaId);
+            Schema schema = _STAGING.getSchema(schemaId);
 
             // build a list of input tables that should be excluded
             Set<String> ids = new HashSet<>();
 
-            List<StagingMapping> mappings = schema.getMappings();
-            if (mappings != null)
-                for (StagingMapping mapping : mappings) {
+            if (schema.getMappings() != null)
+                for (Mapping mapping : schema.getMappings()) {
                     if (ids.contains(mapping.getId()))
                         errors.add("The mapping id " + schemaId + ":" + mapping.getId() + " is duplicated.  This should never happen");
                     ids.add(mapping.getId());
@@ -262,7 +257,7 @@ public abstract class StagingTest {
     public void testBehaviorDescriminator() {
         // test valid combination that requires discriminator and a good discriminator is supplied
         EodSchemaLookup lookup = new EodSchemaLookup("C717", "9591");
-        List<StagingSchema> lookups = _STAGING.lookupSchema(lookup);
+        List<Schema> lookups = _STAGING.lookupSchema(lookup);
         assertThat(lookups).hasSize(3);
         lookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "1");
         lookup.setInput(EodInput.BEHAVIOR.toString(), "3");
@@ -280,7 +275,7 @@ public abstract class StagingTest {
         Set<String> schemaInput = new HashSet<>();
         Set<String> schemaOutput = new HashSet<>();
         for (String schemaId : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(schemaId);
+            Schema schema = _STAGING.getSchema(schemaId);
 
             schemaInput.addAll(_STAGING.getInputs(schema));
             schemaOutput.addAll(_STAGING.getOutputs(schema));
@@ -297,9 +292,9 @@ public abstract class StagingTest {
         Map<String, Set<String>> inputMappings = new HashMap<>();
         Map<String, Set<String>> outputMappings = new HashMap<>();
         for (String schemaId : _STAGING.getSchemaIds()) {
-            StagingSchema schema = _STAGING.getSchema(schemaId);
+            Schema schema = _STAGING.getSchema(schemaId);
 
-            for (StagingSchemaInput input : schema.getInputs()) {
+            for (Input input : schema.getInputs()) {
                 if (input.getNaaccrItem() != null && input.getNaaccrXmlId() == null)
                     errors.add("Schema input " + schema.getId() + "." + input.getKey() + " has a NAACCR number but is missing NAACCR XML ID");
 
@@ -311,7 +306,7 @@ public abstract class StagingTest {
                 }
             }
 
-            for (StagingSchemaOutput output : schema.getOutputs()) {
+            for (Output output : schema.getOutputs()) {
                 if (output.getNaaccrItem() != null && output.getNaaccrXmlId() == null)
                     errors.add("Schema output " + schema.getId() + "." + output.getKey() + " has a NAACCR number but is missing NAACCR XML ID");
 
@@ -379,42 +374,6 @@ public abstract class StagingTest {
             errors.forEach(System.out::println);
             fail("There were " + errors.size() + " issues with " + description + ".");
         }
-    }
-
-    /**
-     * Return the input length from a specified table
-     * @param tableId table indentifier
-     * @param key input key
-     * @return null if no length couild be determined, or the length
-     */
-    protected Integer getInputLength(String tableId, String key) {
-        StagingTable table = _STAGING.getTable(tableId);
-        Integer length = null;
-
-        // loop over each row
-        for (StagingTableRow row : table.getTableRows()) {
-            List<StagingRange> ranges = row.getInputs().get(key);
-
-            for (StagingRange range : ranges) {
-                String low = range.getLow();
-                String high = range.getHigh();
-
-                if (range.matchesAll() || low.isEmpty())
-                    continue;
-
-                if (low.startsWith("{{") && low.contains(Staging.CTX_YEAR_CURRENT))
-                    low = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-                if (high.startsWith("{{") && high.contains(Staging.CTX_YEAR_CURRENT))
-                    high = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-
-                if (length != null && (low.length() != length || high.length() != length))
-                    throw new IllegalStateException("Inconsistent lengths in table " + tableId + " for key " + key);
-
-                length = low.length();
-            }
-        }
-
-        return length;
     }
 
 }
