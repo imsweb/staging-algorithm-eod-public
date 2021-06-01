@@ -19,12 +19,14 @@ import com.imsweb.staging.Staging;
 import com.imsweb.staging.StagingFileDataProvider;
 import com.imsweb.staging.StagingTest;
 import com.imsweb.staging.entities.GlossaryDefinition;
+import com.imsweb.staging.entities.Input;
 import com.imsweb.staging.entities.Output;
 import com.imsweb.staging.entities.Schema;
 import com.imsweb.staging.entities.SchemaLookup;
 import com.imsweb.staging.entities.StagingData;
 import com.imsweb.staging.entities.StagingData.Result;
 import com.imsweb.staging.entities.Table;
+import com.imsweb.staging.entities.impl.StagingMetadata;
 import com.imsweb.staging.eod.EodDataProvider.EodVersion;
 import com.imsweb.staging.eod.EodStagingData.EodInput;
 import com.imsweb.staging.eod.EodStagingData.EodOutput;
@@ -483,5 +485,21 @@ public class EodStagingTest extends StagingTest {
         assertEquals(1, hits.size());
         hits = _STAGING.getTableGlossary("extension_baj");
         assertEquals(3, hits.size());
+    }
+
+    @Test
+    public void testMetadata() {
+        Schema urethra = _STAGING.getSchema("urethra");
+        assertNotNull(urethra);
+
+        Input gradeClin = urethra.getInputMap().get("grade_clin");
+        assertNotNull(gradeClin);
+
+        assertEquals(gradeClin.getMetadata().size(), 5);
+        assertTrue(gradeClin.getMetadata().contains(new StagingMetadata("COC_REQUIRED")));
+        assertTrue(gradeClin.getMetadata().contains(new StagingMetadata("CCCR_REQUIRED")));
+        assertTrue(gradeClin.getMetadata().contains(new StagingMetadata("SEER_REQUIRED")));
+        assertTrue(gradeClin.getMetadata().contains(new StagingMetadata("NPCR_REQUIRED")));
+        assertTrue(gradeClin.getMetadata().contains(new StagingMetadata("SSDI")));
     }
 }
