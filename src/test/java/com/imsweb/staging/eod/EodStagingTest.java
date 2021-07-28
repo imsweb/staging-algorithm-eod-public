@@ -51,7 +51,7 @@ public class EodStagingTest extends StagingTest {
 
     @Override
     public String getVersion() {
-        return EodVersion.v2_0.getVersion();
+        return EodVersion.v2_1.getVersion();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testBasicInitialization() {
-        assertThat(_STAGING.getSchemaIds().size()).isEqualTo(119);
+        assertThat(_STAGING.getSchemaIds().size()).isEqualTo(121);
         assertThat(_STAGING.getTableIds().size() > 0).isTrue();
 
         assertThat(_STAGING.getSchema("urethra")).isNotNull();
@@ -70,7 +70,7 @@ public class EodStagingTest extends StagingTest {
 
     @Test
     public void testVersionInitializationTypes() {
-        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_0));
+        Staging staging10 = Staging.getInstance(EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_1));
         assertThat(staging10.getVersion()).isEqualTo(EodDataProvider.EodVersion.LATEST.getVersion());
 
         Staging stagingLatest = Staging.getInstance(EodDataProvider.getInstance());
@@ -97,11 +97,11 @@ public class EodStagingTest extends StagingTest {
         schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), "");
         lookup = _STAGING.lookupSchema(schemaLookup);
         assertThat(lookup.size()).isEqualTo(1);
-        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
+        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_rare");
         schemaLookup.setInput(EodInput.DISCRIMINATOR_1.toString(), null);
         lookup = _STAGING.lookupSchema(schemaLookup);
         assertThat(lookup.size()).isEqualTo(1);
-        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
+        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_rare");
 
         // test valid combination that requires a discriminator but is not supplied one
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C111", "8200"));
@@ -133,7 +133,7 @@ public class EodStagingTest extends StagingTest {
 
         // test searching on only site
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C401", null));
-        assertThat(lookup.size()).isEqualTo(8);
+        assertThat(lookup.size()).isEqualTo(9);
 
         // test searching on only hist
         lookup = _STAGING.lookupSchema(new EodSchemaLookup(null, "9702"));
@@ -180,19 +180,19 @@ public class EodStagingTest extends StagingTest {
         // do the same lookup twice
         List<Schema> lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
         assertThat(lookup.size()).isEqualTo(1);
-        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
+        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_rare");
 
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
         assertThat(lookup.size()).isEqualTo(1);
-        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
+        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_rare");
 
         // now invalidate the cache
-        EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_0).invalidateCache();
+        EodDataProvider.getInstance(EodDataProvider.EodVersion.v2_1).invalidateCache();
 
         // try the lookup again
         lookup = _STAGING.lookupSchema(new EodSchemaLookup("C629", "9231"));
         assertThat(lookup.size()).isEqualTo(1);
-        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_other");
+        assertThat(lookup.get(0).getId()).isEqualTo("soft_tissue_rare");
     }
 
     @Test
@@ -233,7 +233,7 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getOutput(EodOutput.SS_2018_DERIVED)).isEqualTo("7");
         assertThat(data.getOutput(EodOutput.NAACCR_SCHEMA_ID)).isEqualTo("00280");
         assertThat(data.getOutput(EodOutput.EOD_2018_STAGE_GROUP)).isEqualTo("4");
-        assertThat(data.getOutput(EodOutput.EOD_2018_T)).isEqualTo("T1");
+        assertThat(data.getOutput(EodOutput.EOD_2018_T)).isEqualTo("T1a");
         assertThat(data.getOutput(EodOutput.EOD_2018_N)).isEqualTo("N1");
         assertThat(data.getOutput(EodOutput.EOD_2018_M)).isEqualTo("M1");
         assertThat(data.getOutput(EodOutput.AJCC_ID)).isEqualTo("28");
@@ -447,7 +447,7 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getErrors().size()).isEqualTo(5);
         assertThat(data.getPath().size()).isEqualTo(5);
         assertThat(data.getOutput().size()).isEqualTo(9);
-        assertThat(data.getOutput().get(EodOutput.DERIVED_VERSION.toString())).isEqualTo("2.0");
+        assertThat(data.getOutput().get(EodOutput.DERIVED_VERSION.toString())).isEqualTo("2.1");
     }
 
     @Test

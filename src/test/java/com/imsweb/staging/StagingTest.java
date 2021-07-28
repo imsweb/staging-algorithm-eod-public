@@ -357,7 +357,7 @@ public abstract class StagingTest {
         // check other output
         assertEquals("00200", data.getOutput(EodOutput.NAACCR_SCHEMA_ID));
         assertEquals("4A", data.getOutput(EodOutput.EOD_2018_STAGE_GROUP));
-        assertEquals("2.0", data.getOutput(EodOutput.DERIVED_VERSION));
+        assertEquals("2.1", data.getOutput(EodOutput.DERIVED_VERSION));
         assertEquals("7", data.getOutput(EodOutput.SS_2018_DERIVED));
         assertEquals("T4b", data.getOutput(EodOutput.EOD_2018_T));
         assertEquals("N2b", data.getOutput(EodOutput.EOD_2018_N));
