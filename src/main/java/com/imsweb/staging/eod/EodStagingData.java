@@ -115,7 +115,12 @@ public class EodStagingData extends StagingData {
         PSA("psa"),
         S_CATEGORY_CLIN("s_category_clin"),
         S_CATEGORY_PATH("s_category_path"),
-        ULCERATION("ulceration");
+        ULCERATION("ulceration"),
+        THROMBOCYTOPENIA("thrombocytopenia"),
+        ORGANOMEGALY("organomegaly"),
+        ADENOPATHY("adenopathy"),
+        ANEMIA("anemia"),
+        LYMPHOCYTOSIS("lymphocytosis");
 
         private final String _name;
 
@@ -139,7 +144,8 @@ public class EodStagingData extends StagingData {
         EOD_2018_N("eod_2018_n"),
         EOD_2018_M("eod_2018_m"),
         EOD_2018_STAGE_GROUP("eod_2018_stage_group"),
-        SS_2018_DERIVED("ss2018_derived");
+        SS_2018_DERIVED("ss2018_derived"),
+        DERIVED_RAI_STAGE("derived_rai_stage");
 
         private final String _name;
 

@@ -167,7 +167,7 @@ public abstract class StagingTest {
 
         // hist tests
         List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992", "9993");
-        List<String> invalidHist = Arrays.asList("8006", "8444");
+        List<String> invalidHist = Arrays.asList("8006", "9990");
         for (String hist : validHist)
             assertThat(provider.getValidHistologies().contains(hist))
                     .withFailMessage("The histology '" + hist + "' is not in the valid histology list")
