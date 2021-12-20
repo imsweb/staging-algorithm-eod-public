@@ -154,6 +154,7 @@ signing {
 javadoc {
     if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption('html5', true)
+        options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
 
@@ -164,6 +165,6 @@ nexusStaging {
 }
 
 wrapper {
-    gradleVersion = '7.1.1'
+    gradleVersion = '7.3.2'
     distributionType = Wrapper.DistributionType.ALL
 }
