@@ -5,13 +5,13 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'io.codearte.nexus-staging' version '0.30.0'  // logs into Sonotype OSS and does a "Close" and "Release"
-    id 'com.adarshr.test-logger' version '3.0.0'
+    id 'com.adarshr.test-logger' version '3.1.0'
     id 'com.github.ben-manes.versions' version '0.39.0'
-    id 'org.sonatype.gradle.plugins.scan' version '2.0.12'
+    id 'org.sonatype.gradle.plugins.scan' version '2.2.2'
 }
 
 group = 'com.imsweb'
-version = '2.1.0'
+version = '2.1.1-SNAPSHOT'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -29,21 +29,27 @@ java {
 
 repositories {
     mavenCentral()
+    //maven {
+    //    url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+    //}
 }
 
 dependencies {
     spotbugs 'com.github.spotbugs:spotbugs:4.3.0'
 
-    api 'com.imsweb:staging-client-java:6.1.0'
+    api 'com.imsweb:staging-client-java:6.2.0'
 
-    testImplementation('com.imsweb:staging-client-java:6.1.0') {
+    testImplementation 'org.slf4j:slf4j-api:1.7.32'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
+
+    testImplementation('com.imsweb:staging-client-java:6.2.0-SNAPSHOT') {
         capabilities {
             requireCapability("com.imsweb:staging-client-java-update-support")
         }
     }
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.assertj:assertj-core:3.20.2'
+    testImplementation 'org.assertj:assertj-core:3.21.0'
 }
 
 jar {
