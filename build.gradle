@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-api:1.7.32'
     testImplementation 'org.slf4j:slf4j-simple:1.7.32'
 
-    testImplementation('com.imsweb:staging-client-java:6.2.1-SNAPSHOT') {
+    testImplementation('com.imsweb:staging-client-java:6.2.0-SNAPSHOT') {
         capabilities {
             requireCapability("com.imsweb:staging-client-java-update-support")
         }
