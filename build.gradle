@@ -1,17 +1,17 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
-    id "com.github.spotbugs" version "4.7.2"
+    id "com.github.spotbugs" version "5.0.6"
     id 'maven-publish'
     id 'signing'
     id 'io.codearte.nexus-staging' version '0.30.0'  // logs into Sonotype OSS and does a "Close" and "Release"
-    id 'com.adarshr.test-logger' version '3.1.0'
-    id 'com.github.ben-manes.versions' version '0.41.0'
-    id 'org.sonatype.gradle.plugins.scan' version '2.2.2'
+    id 'com.adarshr.test-logger' version '3.2.0'
+    id 'com.github.ben-manes.versions' version '0.42.0'
+    id 'org.sonatype.gradle.plugins.scan' version '2.2.3'
 }
 
 group = 'com.imsweb'
-version = '2.1.1'
+version = '2.1.2'
 description = 'EOD algorithm for the java-staging-client'
 
 tasks.withType(JavaCompile) {
@@ -35,12 +35,12 @@ repositories {
 }
 
 dependencies {
-    spotbugs 'com.github.spotbugs:spotbugs:4.3.0'
+    spotbugs 'com.github.spotbugs:spotbugs:4.6.0'
 
-    api 'com.imsweb:staging-client-java:6.2.0'
+    api 'com.imsweb:staging-client-java:6.3.0'
 
-    testImplementation 'org.slf4j:slf4j-api:1.7.32'
-    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
+    testImplementation 'org.slf4j:slf4j-api:1.7.36'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.36'
 
     testImplementation('com.imsweb:staging-client-java:6.2.0-SNAPSHOT') {
         capabilities {
@@ -83,6 +83,19 @@ checkstyle {
 
 spotbugs {
     excludeFilter = file('config/spotbugs/spotbugs-exclude.xml')
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
+    def regex = /^[0-9,.v-]+$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+dependencyUpdates {
+    // ignore alpha, beta, etc. versions
+    rejectVersionIf { selection ->
+        isNonStable(selection.candidate.version)
+    }
 }
 
 // don't try to release a snapshot to a non-snapshot repository, that won't work anyway
@@ -171,6 +184,6 @@ nexusStaging {
 }
 
 wrapper {
-    gradleVersion = '7.3.3'
+    gradleVersion = '7.4.2'
     distributionType = Wrapper.DistributionType.ALL
 }
