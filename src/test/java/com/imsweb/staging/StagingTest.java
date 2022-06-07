@@ -161,9 +161,9 @@ public abstract class StagingTest {
         List<String> validSites = Arrays.asList("C000", "C809");
         List<String> invalidSites = Arrays.asList("C727", "C810");
         for (String site : validSites)
-            assertThat(provider.getValidSites().contains(site)).isTrue();
+            assertThat(provider.getValidSites()).contains(site);
         for (String site : invalidSites)
-            assertThat(provider.getValidSites().contains(site)).isFalse();
+            assertThat(provider.getValidSites()).doesNotContain(site);
 
         // hist tests
         List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992", "9993");
