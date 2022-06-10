@@ -15,7 +15,7 @@ public class EodPublicUpdateFromAPI {
     private static final String _ALGORITHM = "eod_public";
 
     public static void main(String[] args) throws IOException {
-        UpdaterUtils.update(_ALGORITHM, EodVersion.v2_1.getVersion(), "c:/tmp/algorithms", new HashSet<>(Collections.singletonList("STAGING")));
+        UpdaterUtils.update(_ALGORITHM, EodVersion.V2_1.getVersion(), "c:/tmp/algorithms", new HashSet<>(Collections.singletonList("STAGING")));
     }
 
 }
