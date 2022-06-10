@@ -169,13 +169,13 @@ public abstract class StagingTest {
         List<String> validHist = Arrays.asList("8000", "8002", "8005", "8290", "9992", "9993");
         List<String> invalidHist = Arrays.asList("8006", "9990");
         for (String hist : validHist)
-            assertThat(provider.getValidHistologies().contains(hist))
+            assertThat(provider.getValidHistologies())
                     .withFailMessage("The histology '" + hist + "' is not in the valid histology list")
-                    .isTrue();
+                    .contains(hist);
         for (String hist : invalidHist)
-            assertThat(provider.getValidHistologies().contains(hist))
+            assertThat(provider.getValidHistologies())
                     .withFailMessage("The histology '" + hist + "' is not supposed to be in the valid histology list")
-                    .isFalse();
+                    .doesNotContain(hist);
     }
 
     @Test

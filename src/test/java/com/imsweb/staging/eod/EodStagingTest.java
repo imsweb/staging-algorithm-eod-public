@@ -447,7 +447,7 @@ public class EodStagingTest extends StagingTest {
         assertThat(data.getErrors()).hasSize(5);
         assertThat(data.getPath()).hasSize(5);
         assertThat(data.getOutput()).hasSize(9);
-        assertThat(data.getOutput().get(EodOutput.DERIVED_VERSION.toString())).isEqualTo("2.1");
+        assertThat(data.getOutput()).containsEntry(EodOutput.DERIVED_VERSION.toString(), "2.1");
     }
 
     @Test

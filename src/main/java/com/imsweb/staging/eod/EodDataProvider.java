@@ -34,21 +34,14 @@ public final class EodDataProvider extends StagingFileDataProvider {
      * @return the data provider
      */
     public static synchronized EodDataProvider getInstance(EodVersion version) {
-        EodDataProvider provider = _PROVIDERS.get(version);
-
-        if (provider == null) {
-            provider = new EodDataProvider(version);
-            _PROVIDERS.put(version, provider);
-        }
-
-        return provider;
+        return _PROVIDERS.computeIfAbsent(version, k -> new EodDataProvider(version));
     }
 
     public enum EodVersion {
         LATEST("2.1"),
         v2_1("2.1");
 
-        private String _version;
+        private final String _version;
 
         EodVersion(String version) {
             _version = version;
