@@ -1,5 +1,6 @@
 # staging-algorithm-eod-public
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=imsweb_staging-algorithm-eod-public&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=imsweb_staging-algorithm-eod-public)
 [![integration](https://github.com/imsweb/staging-algorithm-eod-public/workflows/integration/badge.svg)](https://github.com/imsweb/staging-algorithm-eod-public/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public)
 

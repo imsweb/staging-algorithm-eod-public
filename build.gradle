@@ -1,13 +1,15 @@
 plugins {
     id 'java-library'
     id 'checkstyle'
+    id 'jacoco'
     id "com.github.spotbugs" version "5.0.6"
     id 'maven-publish'
     id 'signing'
     id 'io.codearte.nexus-staging' version '0.30.0'  // logs into Sonotype OSS and does a "Close" and "Release"
     id 'com.adarshr.test-logger' version '3.2.0'
     id 'com.github.ben-manes.versions' version '0.42.0'
-    id 'org.sonatype.gradle.plugins.scan' version '2.2.3'
+    id 'org.sonatype.gradle.plugins.scan' version '2.3.0'
+    id "org.sonarqube" version "3.3"
 }
 
 group = 'com.imsweb'
@@ -49,7 +51,7 @@ dependencies {
     }
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.assertj:assertj-core:3.22.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 jar {
@@ -83,6 +85,21 @@ checkstyle {
 
 spotbugs {
     excludeFilter = file('config/spotbugs/spotbugs-exclude.xml')
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+test.finalizedBy jacocoTestReport
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "imsweb_staging-algorithm-eod-public"
+        property "sonar.organization", "imsweb"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 def isNonStable = { String version ->
