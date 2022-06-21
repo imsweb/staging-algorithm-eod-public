@@ -1,14 +1,15 @@
 # staging-algorithm-eod-public
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=imsweb_staging-algorithm-eod-public&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=imsweb_staging-algorithm-eod-public)
 [![integration](https://github.com/imsweb/staging-algorithm-eod-public/workflows/integration/badge.svg)](https://github.com/imsweb/staging-algorithm-eod-public/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.imsweb/staging-algorithm-eod-public)
 
-Extent of Disease (EOD) is a set of three data items that describe how far a cancer has spread at the time of diagnosis. EOD 2018 is effective for cases 
+## This project has been moved to [staging-client-java](https://github.com/imsweb/staging-client-java).
+
+Extent of Disease (EOD) is a set of three data items that describe how far a cancer has spread at the time of diagnosis. EOD 2018 is effective for cases
 diagnosed in 2018 and later.
- 
+
 In each EOD schema, valid values, definitions, and registrar notes are provided for
- 
+
 - EOD Primary Tumor
 - EOD Lymph Nodes
 - EOD Mets
